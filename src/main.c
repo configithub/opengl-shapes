@@ -14,9 +14,10 @@ void manage_inputs() {
 
 void render() { 
   clear_screen();
+  draw_line(-40, -40, 40, 40);
   //draw_triangle(15,0, 0,15, -15,0);
   //draw_square(-40,-40, 40,-40, 40,40, -40,40);
-  draw_square(0,-40, 40,0, 0,40, -40,0);
+  //draw_square(0,-40, 40,0, 0,40, -40,0);
   SDL_GL_SwapBuffers();
 }
 

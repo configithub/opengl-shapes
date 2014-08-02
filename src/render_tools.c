@@ -67,8 +67,15 @@ void load_png(char* name, int* texture_id) {
   *texture_id = currentTexture;
 }
 
+void draw_line(int x1, int y1, int x2, int y2) {
+  GLfloat vertices[] = {x1,y1, x2,y2};
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glVertexPointer(2, GL_FLOAT, 0, vertices);
+  glDrawArrays(GL_LINES, 0, 2);
+  glDisableClientState(GL_VERTEX_ARRAY);
+}
 
-void draw_triangle(int x1, int x2, int y1, int y2, 
+void draw_triangle(int x1, int y1, int x2, int y2, 
                                         int x3, int y3) {
   GLfloat vertices[] = {x1,y1, x2,y2, x3,y3};
   glEnableClientState(GL_VERTEX_ARRAY);
