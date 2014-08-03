@@ -21,8 +21,13 @@ void draw_line(int x1, int y1, int x2, int y2);
 void draw_triangle(int x1, int x2, int y1, int y2, 
                                         int x3, int y3);
 
-void draw_square(int x1, int x2, int y1, int y2, 
-                              int x3, int y3, int x4, int y4);
+void draw_square(int x1, int y1, int x2, int y2, 
+                 int x3, int y3, int x4, int y4);
+
+void draw_all_rays(int *x, int *y);
+
+void draw_square_ray_opaque(int x1, int y1, int x2, int y2, 
+                 int x3, int y3, int x4, int y4);
 
 void draw_rectangle_texture(GLuint texture, int x, int y, 
                   int xtex, int ytex, int wtex, int htex, 

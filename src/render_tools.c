@@ -1,6 +1,6 @@
 #include "render_tools.h"
 
-typedef struct{
+typedef struct {
   int w;
   int h;
 } wh;
@@ -8,6 +8,24 @@ typedef struct{
 #define max_texture_sheets 50
 wh wh_array[max_texture_sheets]; 
 
+typedef struct {
+  int x;
+  int y;
+} point;
+
+#define max_ray_corners 200
+point ray_corners[max_ray_corners]; 
+int current_ray_corner = 0;
+
+void register_ray_corner(int x, int y) {
+  // we will potentially check every point registered here, bad performances
+  for (int i = 0; i < current_ray_corner; ++i) {
+    if(ray_corners[i].x == x && ray_corners[i].y == y) { return; }
+  }
+  ray_corners[current_ray_corner].x = x;
+  ray_corners[current_ray_corner].y = y;
+  ++current_ray_corner;
+}
 
 bool init_sdl() {
   if ( SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO|SDL_INIT_JOYSTICK) == -1 ) {
@@ -22,7 +40,7 @@ bool init_sdl() {
   glViewport(0, 0, WWIDTH, WHEIGHT);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glOrtho(-WWIDTH/2, WWIDTH/2, WHEIGHT/2, -WHEIGHT/2, -1, 1);
+  glOrtho(0, WWIDTH, WHEIGHT, 0, -1, 1);
   glScalef(1, 1, 1);
   glMatrixMode(GL_MODELVIEW);
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -92,6 +110,26 @@ void draw_square(int x1, int y1, int x2, int y2,
   glVertexPointer(2, GL_FLOAT, 0, vertices);
   glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
   glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void draw_all_rays(int *x, int *y) {
+  for (int i = 0; i < current_ray_corner; ++i) {
+    draw_line(*x, *y, ray_corners[i].x, ray_corners[i].y);
+  }
+}
+
+void draw_square_ray_opaque(int x1, int y1, int x2, int y2, 
+                 int x3, int y3, int x4, int y4) {
+  GLfloat vertices[] = {x1,y1, x2,y2, x3,y3, x4,y4};
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glVertexPointer(2, GL_FLOAT, 0, vertices);
+  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+  glDisableClientState(GL_VERTEX_ARRAY);
+  // add rectangle corners to the ray corners array
+  register_ray_corner(x1, y1);
+  register_ray_corner(x2, y2);
+  register_ray_corner(x3, y3);
+  register_ray_corner(x4, y4);
 }
 
 
