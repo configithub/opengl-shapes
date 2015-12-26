@@ -19,9 +19,14 @@ void render() {
   //draw_line(-40, -40, 40, 40);
   //draw_triangle(15,0, 0,15, -15,0);
   //draw_square(-40,-40, 40,-40, 40,40, -40,40);
-  draw_square_ray_opaque(WWIDTH/2,-40+WHEIGHT/2, 40+WWIDTH/2,WHEIGHT/2, 
-                         WWIDTH/2,40+WHEIGHT/2, -40+WWIDTH/2,WHEIGHT/2);
-  draw_all_rays(&mouse_x, &mouse_y);
+  
+  //draw_square_ray_opaque(WWIDTH/2,-40+WHEIGHT/2, 40+WWIDTH/2,WHEIGHT/2, 
+                         //WWIDTH/2,40+WHEIGHT/2, -40+WWIDTH/2,WHEIGHT/2);
+  //draw_all_rays(&mouse_x, &mouse_y);
+  fpoint center;
+  center.x = WWIDTH/2;
+  center.y = WHEIGHT/2;
+  draw_ngon(&center, 70, 9);
   SDL_GL_SwapBuffers();
 }
 

@@ -1,14 +1,18 @@
 #ifndef _RENDER_TOOLS_H_
 #define _RENDER_TOOLS_H_
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include <GL/gl.h>
 #include <stdbool.h>
 
 #define WWIDTH 400
 #define WHEIGHT 300
 #define BPP_DEPTH 16
+
+typedef struct {
+  int x; int y;
+} fpoint;
 
 bool init_sdl();
 
@@ -33,5 +37,6 @@ void draw_rectangle_texture(GLuint texture, int x, int y,
                   int xtex, int ytex, int wtex, int htex, 
                 GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 
+void draw_ngon(fpoint* center, int r, int n);
 
 #endif

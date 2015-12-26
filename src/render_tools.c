@@ -1,4 +1,6 @@
 #include "render_tools.h"
+#include <tgmath.h>
+#include <stdlib.h>
 
 typedef struct {
   int w;
@@ -166,6 +168,21 @@ void draw_rectangle_texture(GLuint texture, int x, int y,
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
+
+void draw_ngon(fpoint* center, int r, int n) {
+  int i; fpoint a; fpoint b;
+  float pi = 3.1416;
+  for(i=0; i<n; ++i) { 
+    float theta = 2*i*pi / n; 
+    a.x = center->x + r * cos(theta); 
+    a.y = center->y + r * sin(theta);
+    theta = 2*(i+1)*pi / n; 
+    b.x = center->x + r * cos(theta);
+    b.x = center->x + r * cos(theta) * cos(pi/n) / cos(fmod(theta, 2*pi/n)-pi/n);
+    b.y = center->y + r * sin(theta);
+    draw_line((int)a.x, (int)a.y, (int)b.x, (int)b.y);
+  }
+}
 
 
 
