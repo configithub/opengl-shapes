@@ -114,6 +114,28 @@ void draw_square(int x1, int y1, int x2, int y2,
   glDisableClientState(GL_VERTEX_ARRAY);
 }
 
+
+void draw_fsquare(int x, int y, int r) {
+  GLfloat vertices[] = {x+r,y+r, x-r,y+r, x-r,y-r, x+r,y-r};
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glVertexPointer(2, GL_FLOAT, 0, vertices);
+  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+  glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void draw_point(int x, int y, int r) {
+  int x1,y1,x2,y2;
+  x1=x+r; y1=y+r; x2=x+r; y2=y-r;
+  draw_line(x1, y1, x2, y2);
+  x1=x+r; y1=y+r; x2=x-r; y2=y+r;
+  draw_line(x1, y1, x2, y2);
+  x1=x-r; y1=y-r; x2=x+r; y2=y-r;
+  draw_line(x1, y1, x2, y2);
+  x1=x-r; y1=y-r; x2=x-r; y2=y+r;
+  draw_line(x1, y1, x2, y2);
+}
+
+
 void draw_all_rays(int *x, int *y) {
   for (int i = 0; i < current_ray_corner; ++i) {
     draw_line(*x, *y, ray_corners[i].x, ray_corners[i].y);
@@ -178,11 +200,60 @@ void draw_ngon(fpoint* center, int r, int n) {
     a.y = center->y + r * sin(theta);
     theta = 2*(i+1)*pi / n; 
     b.x = center->x + r * cos(theta);
-    b.x = center->x + r * cos(theta) * cos(pi/n) / cos(fmod(theta, 2*pi/n)-pi/n);
     b.y = center->y + r * sin(theta);
     draw_line((int)a.x, (int)a.y, (int)b.x, (int)b.y);
   }
 }
 
+void draw_ngon2(fpoint* center, int r, int n) {
+  int i; fpoint a; fpoint b;
+  float pi = 3.1416;
+  for(i=0; i<n; ++i) { 
+    float theta = 2*i*pi / n; 
+    a.x = center->x + r * cos(theta); 
+    a.y = center->y + r * sin(theta);
+    draw_fsquare(a.x, a.y, 5);
+  }
+}
+
+void draw_ngon3(fpoint* center, int r, int n) {
+  int i; fpoint a; fpoint b;
+  float pi = 3.1416;
+  int d = 100;
+  for(i=0; i<d; ++i) { 
+    float theta = 2*i*pi / d; 
+    a.x = center->x + r * cos(theta) * cos(pi/n) / cos(fmod(theta, 2*pi/n)-pi/n);
+    a.y = center->y + r * sin(theta) * cos(pi/n) / cos(fmod(theta, 2*pi/n)-pi/n);
+    draw_point(a.x, a.y, 2);
+  }
+}
+
+void draw_ngon4(fpoint* center, int r, int n) {
+  int i; fpoint a; fpoint b;
+  float pi = 3.1416;
+  int d = 100;
+  for(i=0; i<d; ++i) { 
+    float theta = (float)i/d;
+    a.x = center->x + r * cos(2*pi*theta) * cos(pi/n) / cos(2*pi*(fmod(theta, 1.0/n))-pi/n);
+    a.y = center->y + r * sin(2*pi*theta) * cos(pi/n) / cos(2*pi*(fmod(theta, 1.0/n))-pi/n);
+    draw_point(a.x, a.y, 2);
+  }
+}
+
+void draw_stargon(fpoint* center, int r, int n) {
+  int i; fpoint a; fpoint b;
+  float pi = 3.1416;
+  int d = 100;
+  for(i=0; i<d; ++i) { 
+    float theta = 2*i*pi / d; 
+    a.x = center->x + r * cos(theta) * cos(pi/n) / cos(fmod(n*theta, 2*pi/n)-pi/n);
+    a.y = center->y + r * sin(theta) * cos(pi/n) / cos(fmod(n*theta, 2*pi/n)-pi/n);
+    theta = 2*(i+1)*pi / d; 
+    b.x = center->x + r * cos(theta) * cos(pi/n) / cos(fmod(n*theta, 2*pi/n)-pi/n);
+    b.y = center->y + r * sin(theta) * cos(pi/n) / cos(fmod(n*theta, 2*pi/n)-pi/n);
+    draw_point(a.x, a.y, 2);
+    draw_point(b.x, b.y, 2);
+  }
+}
 
 

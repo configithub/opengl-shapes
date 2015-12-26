@@ -26,7 +26,9 @@ void render() {
   fpoint center;
   center.x = WWIDTH/2;
   center.y = WHEIGHT/2;
-  draw_ngon(&center, 70, 9);
+  //draw_ngon(&center, 70, 9);
+  //draw_ngon2(&center, 70, 9);
+  draw_ngon4(&center, 70, 7);
   SDL_GL_SwapBuffers();
 }
 
